@@ -1,13 +1,15 @@
+"use client";
+
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import FormLogin from "../FormLogin/FormLogin";
 import { StyledContentBox, StyledRightSectionContainer } from "./RightSection.style";
 import FormCadastro from "../FormCadastro/FormCadastro";
+import { useRouter } from "next/navigation";
 
-const RightSection: React.FC = () => {
+export const RightSection: React.FC = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [userData, setUserData] = useState<{ email: string; password: string } | null>(null);
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const toggleForm = () => {
         setIsLogin(!isLogin);
@@ -15,9 +17,9 @@ const RightSection: React.FC = () => {
 
     const handleLogin = (email: string, password: string) => {
         if (userData && userData.email === email && userData.password === password) {
-        navigate("/");
+        router.push("/");
         } else {
-        alert("CPF ou senha incorretos.");
+        alert("Email ou senha incorretos.");
         }
     };
 
@@ -33,5 +35,3 @@ const RightSection: React.FC = () => {
         </StyledRightSectionContainer>
     );
 };
-
-export default RightSection;

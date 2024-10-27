@@ -16,6 +16,7 @@ export const StyledMeios = styled.div`
         color: black;
         display: flex;
         align-items: center;
+        text-decoration: none;
     }
 
     svg {

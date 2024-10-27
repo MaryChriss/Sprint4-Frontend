@@ -34,7 +34,7 @@ export const InputIcon = styled.span`
 `;
 
 export const Input = styled.input`
-    width: 100%;
+    width: 32rem;
     padding: 0.8rem;
     padding-left: 2.5rem;
     margin-bottom: 1rem;
