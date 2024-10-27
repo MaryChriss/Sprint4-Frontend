@@ -6,9 +6,9 @@ import { Button, Input, InputContainer, InputIcon, Styledh1, SwitchLink } from "
 interface FormLoginProps {
     toggleForm: () => void;
     handleLogin: (email: string, password: string) => void;
-    }
+}
 
-    const FormLogin: React.FC<FormLoginProps> = ({ toggleForm, handleLogin }) => {
+const FormLogin: React.FC<FormLoginProps> = ({ toggleForm, handleLogin }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -19,39 +19,37 @@ interface FormLoginProps {
 
     return (
         <>
-        <Styledh1>Login:</Styledh1>
+            <Styledh1>Login:</Styledh1>
+            <form onSubmit={handleSubmit}>
+                <InputContainer>
+                    <InputIcon>
+                        <BiUser size="1.5rem" color="#00a1fc" />
+                    </InputIcon>
+                    <Input
+                        type="text"
+                        placeholder="     E-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </InputContainer>
 
-        <form onSubmit={handleSubmit}>
-            <InputContainer>
-            <InputIcon>
-                <BiUser size="1.5rem" color="#00a1fc" />
-            </InputIcon>
-            <Input
-                type="text"
-                placeholder="     E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            </InputContainer>
+                <InputContainer>
+                    <InputIcon>
+                        <FaLock size="1.5rem" color="#00a1fc" />
+                    </InputIcon>
+                    <Input
+                        type="password"
+                        placeholder="      Senha"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </InputContainer>
 
-            <InputContainer>
-            <InputIcon>
-                <FaLock size="1.5rem" color="#00a1fc" />
-            </InputIcon>
-            <Input
-                type="password"
-                placeholder="      Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            </InputContainer>
-
-            <div>
-            <Button type="submit">Entrar</Button>
-            </div>
-        </form>
-
-        <SwitchLink onClick={toggleForm}>É novo aqui? Cadastre-se</SwitchLink>
+                <div>
+                    <Button type="submit">Entrar</Button>
+                </div>
+            </form>
+            <SwitchLink onClick={toggleForm}>É novo aqui? Cadastre-se</SwitchLink>
         </>
     );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCar, FaTimes } from "react-icons/fa";
 import { Button } from "../../components/FormLogin/FormLogin.style";
 import { Layout } from "../../components/Layout/Layout";
@@ -8,26 +8,40 @@ import { StyledCar, StyledContainer, StyledConteudo, StyledInfosUser } from "./P
 import Image from "next/image";
 
 export default function Perfil() {
+    const [user, setUser] = useState<{ name: string; email: string } | null>(null);
     const [vehicles, setVehicles] = useState([]);
     const [model, setModel] = useState('');
     const [brand, setBrand] = useState('');
     const [year, setYear] = useState('');
 
-    const handleAddVehicle = () => {
+    useEffect(() => {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
 
+        const savedVehicles = localStorage.getItem("vehicles");
+        if (savedVehicles) {
+            setVehicles(JSON.parse(savedVehicles));
+        }
+    }, []);
+
+    const handleAddVehicle = () => {
         if (model && brand && year) {
             const newVehicle = { model, brand, year };
-            setVehicles([...vehicles, newVehicle]);
+            const updatedVehicles = [...vehicles, newVehicle];
+            setVehicles(updatedVehicles);
+            localStorage.setItem("vehicles", JSON.stringify(updatedVehicles)); // Salva veículos no localStorage
             setModel('');
             setBrand('');
             setYear('');
         }
     };
 
-    const handleRemoveVehicle = (indexToRemove) => {
-
+    const handleRemoveVehicle = (indexToRemove: number) => {
         const updatedVehicles = vehicles.filter((_, index) => index !== indexToRemove);
         setVehicles(updatedVehicles);
+        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles)); // Atualiza veículos no localStorage
     };
 
     return (
@@ -37,8 +51,8 @@ export default function Perfil() {
                     <StyledInfosUser>
                         <Image src="/user.png" alt="Usuário" className="image" width={192} height={192}/>
                         <div>
-                            <h1 className="h1fi">Fulano de tal tal e tal</h1>
-                            <p>E-mail:</p>
+                            <h1 className="h1fi">{user?.name || "Nome do Usuário"}</h1>
+                            <p>E-mail: {user?.email || "email@example.com"}</p>
                         </div>
                     </StyledInfosUser>
 

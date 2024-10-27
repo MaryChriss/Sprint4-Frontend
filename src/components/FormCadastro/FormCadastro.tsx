@@ -4,13 +4,14 @@ import { Styledh1Cadas } from "./FormCadastro.style";
 
 interface FormCadastroProps {
     toggleForm: () => void;
-    setUserData: (data: { email: string; password: string }) => void;
+    setUserData?: (data: { email: string; password: string }) => void;
 }
 
 const FormCadastro: React.FC<FormCadastroProps> = ({ toggleForm, setUserData }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [name, setName] = useState("");
 
     const isValidEmail = (email: string) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -29,7 +30,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({ toggleForm, setUserData }) 
             return;
         }
 
-        setUserData({ email, password });
+        if (setUserData) {
+            setUserData({ email, password});
+        }
+
         alert("Cadastro realizado com sucesso! Agora faça o login.");
         toggleForm();
     };
@@ -41,6 +45,8 @@ const FormCadastro: React.FC<FormCadastroProps> = ({ toggleForm, setUserData }) 
                 <Input
                     type="text"
                     placeholder="Nome Completo"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                     type="email"
