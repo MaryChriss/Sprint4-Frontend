@@ -27,9 +27,9 @@ export default function Home() {
                     </StyledText>
 
                     <StyledImgPrinc>
-                      <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas" width={96} height={96}/>
-                      <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" width={352} height={352} />
-                    </StyledImgPrinc>
+                        <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas" width={96} height={96}/>
+                        <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" width={352} height={352} />
+                        </StyledImgPrinc>
                 </StyledDescription>
 
                 <StyledSub>
