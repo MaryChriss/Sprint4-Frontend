@@ -1,63 +1,48 @@
-import { BiGroup, BiHome, BiUserCircle } from "react-icons/bi";
-import { LogoPorto } from "../LogoPorto/LogoPorto";
-import { StyledHeader, StyledLink, StyledLogin, StyledMenuItem, StyledRotas, StyledWrapperMenu } from "./Header.style";
-import { BsTelephone } from "react-icons/bs";
-import { LuUserSquare2 } from "react-icons/lu";
-import Link from "next/link";
+import { BiGroup, BiHome, BiUserCircle } from "react-icons/bi"
+import { LogoPorto } from "../LogoPorto/LogoPorto"
+import { StyledHeader, StyledLink, StyledLogin, StyledMenuItem, StyledRotas, StyledWrapperMenu } from "./Header.style"
+import { BsTelephone } from "react-icons/bs"
+import { LuUserSquare2 } from "react-icons/lu"
 
-export const Header = () => {
+export const Header =() => {
     return (
         <>
         <StyledHeader>
+
             <LogoPorto />
 
-            <StyledRotas>
-                <StyledWrapperMenu>
+                <StyledRotas>
+                    <StyledWrapperMenu>
 
-                    <StyledMenuItem>
-                        <Link href="/" passHref>
-                            <StyledLink>
-                            <BiHome size="1.5rem" color="#00a1fc" /> Home
-                            </StyledLink>
-                        </Link>
-                    </StyledMenuItem>
+                        <StyledMenuItem>
+                            <BiHome size="1.5rem" color="#00a1fc" />
+                            <StyledLink href="/">Home</StyledLink>
+                        </StyledMenuItem>
 
-                    <StyledMenuItem>
-                        <Link href="/equipe" passHref>
-                            <StyledLink>
-                            <BiGroup size="1.5rem" color="#00a1fc" /> Equipe
-                            </StyledLink>
-                        </Link>
-                    </StyledMenuItem>
+                        <StyledMenuItem>
+                            <BiGroup size="1.5rem" color="#00a1fc" />
+                            <StyledLink href="/equipe">Equipe</StyledLink>
+                        </StyledMenuItem>
 
-                    <StyledMenuItem>
-                        <Link href="/contato" passHref>
-                            <StyledLink>
-                            <BsTelephone size="1.2rem" color="#00a1fc" /> Contato
-                            </StyledLink>
-                        </Link>
-                    </StyledMenuItem>
+                        <StyledMenuItem>
+                            <BsTelephone size="1.2rem" color="#00a1fc" />
+                            <StyledLink href="/contato">Contato</StyledLink>
+                        </StyledMenuItem>
 
-                    <StyledMenuItem>
-                        <Link href="/perfil" passHref>
-                            <StyledLink>
-                            <LuUserSquare2 size="1.5rem" color="#00a1fc" /> Perfil
-                            </StyledLink>
-                        </Link>
-                    </StyledMenuItem>
+                        <StyledMenuItem>
+                            <LuUserSquare2 size="1.5rem" color="#00a1fc" />
+                            <StyledLink href="/perfil">Perfil</StyledLink>
+                        </StyledMenuItem>
+                        
+                    </StyledWrapperMenu>
+                </StyledRotas>
 
-                </StyledWrapperMenu>
-            </StyledRotas>
+                <StyledLogin>
+                    <BiUserCircle size="1.5rem" color="#00a1fc" />
+                    <StyledLink href="/login">Login</StyledLink>
+                </StyledLogin>
 
-            <StyledLogin>
-                <Link href="/login" passHref>
-                    <StyledLink>
-                    <BiUserCircle size="1.5rem" color="#00a1fc" /> Login
-                    </StyledLink>
-                </Link>
-            </StyledLogin>
-            
         </StyledHeader>
         </>
-    );
-};
+    )
+}
