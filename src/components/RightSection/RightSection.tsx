@@ -17,21 +17,21 @@ export const RightSection: React.FC = () => {
 
     const handleLogin = (email: string, password: string) => {
         if (userData && userData.email === email && userData.password === password) {
-        router.push("/");
+            router.push("/perfil");
         } else {
-        alert("Email ou senha incorretos.");
+            alert("Email ou senha incorretos.");
         }
     };
 
     return (
         <StyledRightSectionContainer>
-        <StyledContentBox>
-            {isLogin ? (
-            <FormLogin toggleForm={toggleForm} handleLogin={handleLogin} />
-            ) : (
-            <FormCadastro toggleForm={toggleForm} setUserData={setUserData} />
-            )}
-        </StyledContentBox>
+            <StyledContentBox>
+                {isLogin ? (
+                    <FormLogin toggleForm={toggleForm} handleLogin={handleLogin} />
+                ) : (
+                    <FormCadastro toggleForm={toggleForm} setUserData={setUserData} />
+                )}
+            </StyledContentBox>
         </StyledRightSectionContainer>
     );
 };
