@@ -32,7 +32,6 @@ export const StyledHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.9rem;
     `;
 
     export const StyledLogin = styled.div`

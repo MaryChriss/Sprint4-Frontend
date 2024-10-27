@@ -1,10 +1,12 @@
+"use client";
+
 import { BiComment } from "react-icons/bi";
 import { BiListUl } from "react-icons/bi";
 import { BiMessageAltCheck } from "react-icons/bi";
 import { BiCar } from "react-icons/bi";
-import { StyledDescription, StyledFirstStep, StyledHome, StyledImgPrinc, StyledSecondStep, StyledStepByStep, StyledSteps, StyledStepsContainer, StyledSub, StyledText, StyledThirdStep } from "./Home.style";
 import { Layout } from "@/components/Layout/Layout";
 import Image from 'next/image';
+import { StyledDescription, StyledFirstStep, StyledHome, StyledImgPrinc, StyledSecondStep, StyledStepByStep, StyledSteps, StyledStepsContainer, StyledSub, StyledText, StyledThirdStep } from "./home.style";
 
 export default function Home() {
     return (
@@ -25,8 +27,8 @@ export default function Home() {
                     </StyledText>
 
                     <StyledImgPrinc>
-                      <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas"/>
-                      <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" />
+                      <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas" width={96} height={96}/>
+                      <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" width={352} height={352} />
                     </StyledImgPrinc>
                 </StyledDescription>
 
@@ -40,7 +42,7 @@ export default function Home() {
 
                         <StyledFirstStep>
                             <StyledSteps>
-                                <Image src="/public/WatsonIA.png" alt="Icone watson" />
+                                <Image src="/WatsonIA.png" alt="Icone watson"  width={63} height={63} />
                                 <h3>Passo 1: Inicie a conversa</h3>
                                 <p>Clique no ícone do chatbot para iniciar a conversa com nossa inteligência artificial.</p>
                             </StyledSteps>
