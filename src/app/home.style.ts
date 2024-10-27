@@ -1,0 +1,4 @@
+import styled from "styled-components";
+
+export const StyledHome = styled.section`
+    margin-top: 2rem;

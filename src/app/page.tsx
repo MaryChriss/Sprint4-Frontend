@@ -25,8 +25,8 @@ export default function Home() {
                     </StyledText>
 
                     <StyledImgPrinc>
-                      <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas" width={96} height={96} />
-                      <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" width={352} height={352} />
+                      <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas"/>
+                      <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" />
                     </StyledImgPrinc>
                 </StyledDescription>
 
@@ -40,7 +40,7 @@ export default function Home() {
 
                         <StyledFirstStep>
                             <StyledSteps>
-                                <img  src="/public/WatsonIA.png" alt="Icone watson" />
+                                <Image src="/public/WatsonIA.png" alt="Icone watson" />
                                 <h3>Passo 1: Inicie a conversa</h3>
                                 <p>Clique no ícone do chatbot para iniciar a conversa com nossa inteligência artificial.</p>
                             </StyledSteps>
