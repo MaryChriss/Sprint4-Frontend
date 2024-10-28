@@ -35,6 +35,11 @@ export const StyledConteudo = styled.div`
         margin-left: 2rem;
     }
 
+    @media (min-width: 600px) and (max-width:999px){
+        margin-right: 7rem;
+        margin-left: 7rem;
+    }
+
 `
 
 export const StyledInfosUser = styled.div`
@@ -46,7 +51,6 @@ export const StyledInfosUser = styled.div`
 
     .h1fi {
         margin-top: 3rem;
-
     }
 
 `
@@ -57,9 +61,17 @@ export const StyledInputsCar = styled.div`
         margin-left: 5rem;
 
         .botao {
-        margin-left: "10rem";
-        margin-bottom: "2rem"
+        margin-left: 5rem;
+        margin-bottom: 2rem;
     }
+    }
+
+    @media (min-width: 600px) and (max-width:999px){
+        margin-left: 2rem;
+
+        .botao{
+            margin-left: 9rem;
+        }
     }
 `
 
@@ -82,6 +94,10 @@ export const StyledCar = styled.div`
 
     @media (max-width: 599px) {
         width: 30rem; 
+    }
+
+    @media (min-width: 600px) and (max-width:999px){
+        width: 42rem; 
     }
 
 

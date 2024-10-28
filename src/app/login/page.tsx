@@ -5,6 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { StyledLeftSectionContainer, StyledName, StyledTitulo } from "./Login.style";
 import { RightSection } from "@/components/RightSection/RightSection";
+import { Footer } from "@/components/Footer/Footer";
 const Login: React.FC = () => {
     const router = useRouter();
 
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
                 </div>
                 <RightSection />
             </StyledLeftSectionContainer>
+            <Footer/>
         </>
     );
 };
