@@ -45,8 +45,8 @@ export const StyledText = styled.div`
     @media(max-width: 599px) {
         display: flex;
         flex-direction: column;
-        margin-left: 3rem;
-        margin-top: 5rem;
+        margin-left: 4rem;
+        margin-top: 3rem;
         margin-right: 20px;
 
         h1 {
@@ -104,7 +104,7 @@ export const StyledText = styled.div`
 export const StyledImgPrinc = styled.div`
     position: relative;
 
-    Image.decoration1 {
+    .decoration1 {
         position: absolute;
         margin-left: 22rem;
         width: 8rem;
@@ -113,25 +113,25 @@ export const StyledImgPrinc = styled.div`
 
     @media(max-width: 599px) {
 
-        Image.fundo {
-            margin-top: 2rem;
-            margin-left: 5rem;
+        .fundo {
+            margin-top: 3rem;
+            margin-left: 10.5rem;
             margin-right: 2rem;
             height: 17rem;
             width: 17rem;
         }
 
-        Image.decoration1 {
+        .decoration1 {
             position: absolute;
-            margin-left: 19rem;
-            width: 6rem;
-            height: 6rem;
+            margin-left: 24.5rem;
+            width: 5.5rem;
+            height: 5.5rem;
         }
     }
 
     @media (min-width: 600px) and (max-width:999px){
 
-      Image.fundo {
+        .fundo {
             margin-top: 2rem;
             margin-left: 0rem;
             margin-right: 0rem;
@@ -139,7 +139,7 @@ export const StyledImgPrinc = styled.div`
             width: 17rem;
         }
 
-        Image.decoration1 {
+            .decoration1 {
             position: absolute;
             margin-left: 13rem;
             width: 6rem;
@@ -157,7 +157,7 @@ export const StyledImgPrinc = styled.div`
             width: 22rem;
     }
 
-    Image.decoration1 {
+    .decoration1 {
         position: absolute;
         margin-left: 21rem;
         width: 6rem;
@@ -177,7 +177,7 @@ export const StyledSub = styled.div`
         display: flex;
         justify-content: center;
         margin-top: 5rem;
-        margin-right: 0rem;
+        margin-right: 1.4rem;
         margin-left: 0rem;
         margin-bottom: 2rem;
         font-size: 1rem;

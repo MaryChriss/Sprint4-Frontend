@@ -50,6 +50,11 @@ export const Input = styled.input`
 
     @media(max-width: 599px) {
         padding: 0.5rem;
+        width: 15rem;
+    }
+
+    @media (min-width: 600px) and (max-width:999px){
+        width: 25rem;
     }
 `;
 

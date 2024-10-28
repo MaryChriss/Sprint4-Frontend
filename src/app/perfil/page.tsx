@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FaCar, FaTimes } from "react-icons/fa";
 import { Button } from "../../components/FormLogin/FormLogin.style";
 import { Layout } from "../../components/Layout/Layout";
-import { StyledCar, StyledContainer, StyledConteudo, StyledInfosUser } from "./Perfil.style";
+import { StyledCar, StyledContainer, StyledConteudo, StyledInfosUser, StyledInputsCar } from "./Perfil.style";
 import Image from "next/image";
 
 export default function Perfil() {
@@ -56,7 +56,7 @@ export default function Perfil() {
                         </div>
                     </StyledInfosUser>
 
-                    <div>
+                    <StyledInputsCar>
                         <h3>Veículos:</h3>
                         <div>
                             <input
@@ -82,12 +82,13 @@ export default function Perfil() {
                             />
                         </div>
                         <Button
+                            className="botao"
                             onClick={handleAddVehicle}
-                            style={{ marginTop: '2rem', marginLeft: "10rem", marginBottom: "2rem" }}
+                            style={{ marginTop: '2rem' }}
                         >
                             Adicionar
                         </Button>
-                    </div>
+                    </StyledInputsCar>
 
                     <StyledCar>
                         {vehicles.map((vehicle, index) => (
