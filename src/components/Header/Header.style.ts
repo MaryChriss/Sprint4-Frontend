@@ -1,3 +1,4 @@
+import { BiHome } from 'react-icons/bi';
 import styled from "styled-components";
 
 export const StyledHeader = styled.div`
@@ -14,7 +15,7 @@ export const StyledHeader = styled.div`
     margin-right: 5rem;
 
     @media (max-width: 599px) {
-        margin-right: 1rem;
+        margin-right: 2rem;
     }
     `;
 
@@ -23,6 +24,11 @@ export const StyledHeader = styled.div`
     display: flex;
     gap: 2rem;
     width: 100%;
+
+    @media (max-width: 599px) {
+        gap: 1rem;
+        padding-left: 0;
+    }
     `;
 
     export const StyledMenuItem = styled.li`
@@ -32,6 +38,10 @@ export const StyledHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &svg {
+        width: 0.4rem;
+    }
     `;
 
     export const StyledLogin = styled.div`
@@ -51,6 +61,6 @@ export const StyledHeader = styled.div`
     }
 
     @media (max-width: 599px) {
-        font-size: 10px;
+        font-size: 12px;
     }
 `;
