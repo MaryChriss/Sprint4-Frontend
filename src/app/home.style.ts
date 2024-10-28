@@ -157,7 +157,7 @@ export const StyledImgPrinc = styled.div`
             width: 22rem;
     }
 
-    Image.decoration1 {
+    .decoration1 {
         position: absolute;
         margin-left: 21rem;
         width: 6rem;
