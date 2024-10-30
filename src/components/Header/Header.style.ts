@@ -1,4 +1,4 @@
-import { BiHome } from 'react-icons/bi';
+import Link from 'next/link';
 import styled from "styled-components";
 
 export const StyledHeader = styled.div`
@@ -51,7 +51,7 @@ export const StyledHeader = styled.div`
     margin-right: 20px;
     `;
 
-    export const StyledLink = styled.a`
+    export const StyledLink = styled(Link)`
     text-decoration: none;
     color: black;
     font-weight: 700;

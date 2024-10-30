@@ -22,6 +22,6 @@ export const StyledContentBox = styled.div`
 
     @media (min-width: 600px) and (max-width:999px){
         margin-bottom: 1.5rem;
-        width: 28rem;
+        width: 23rem;
     }
 `;

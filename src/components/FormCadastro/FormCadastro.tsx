@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Input, SwitchLink } from "../FormLogin/FormLogin.style";
 import { Styledh1Cadas } from "./FormCadastro.style";
+import { FaCircleArrowLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 interface FormCadastroProps {
     toggleForm: () => void;
@@ -8,6 +10,7 @@ interface FormCadastroProps {
 }
 
 const FormCadastro: React.FC<FormCadastroProps> = ({ toggleForm, setUserData }) => {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,8 +41,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({ toggleForm, setUserData }) 
         toggleForm();
     };
 
+
     return (
         <>
+            <FaCircleArrowLeft size={25} onClick={toggleForm}/>
             <Styledh1Cadas>Cadastre-se:</Styledh1Cadas>
             <form onSubmit={handleSubmit}>
                 <Input

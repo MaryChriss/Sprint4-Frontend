@@ -54,7 +54,7 @@ export const Input = styled.input`
     }
 
     @media (min-width: 600px) and (max-width:999px){
-        width: 25rem;
+        width: 20rem;
     }
 `;
 
@@ -71,7 +71,7 @@ export const Button = styled.button`
     margin-left: 8rem;
 
     @media(max-width: 599px) {
-        margin-left: 2.5rem;
+        margin-left: 4rem;
     }
 
     @media (min-width: 600px) and (max-width:999px){

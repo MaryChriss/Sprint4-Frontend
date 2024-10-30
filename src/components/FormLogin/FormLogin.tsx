@@ -1,7 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
 import { BiUser } from "react-icons/bi";
-import { FaLock } from "react-icons/fa"; 
+import { FaLock, FaLongArrowAltLeft } from "react-icons/fa";
 import { Button, Input, InputContainer, InputIcon, Styledh1, SwitchLink } from "./FormLogin.style";
+import { useRouter } from "next/navigation";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 interface FormLoginProps {
     toggleForm: () => void;
@@ -9,6 +13,7 @@ interface FormLoginProps {
 }
 
 const FormLogin: React.FC<FormLoginProps> = ({ toggleForm, handleLogin }) => {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -17,8 +22,13 @@ const FormLogin: React.FC<FormLoginProps> = ({ toggleForm, handleLogin }) => {
         handleLogin(email, password);
     };
 
+    const handleClick = () => {
+        router.push('/');
+    };
+
     return (
         <>
+            <FaCircleArrowLeft size={25} onClick={handleClick}/>
             <Styledh1>Login:</Styledh1>
             <form onSubmit={handleSubmit}>
                 <InputContainer>

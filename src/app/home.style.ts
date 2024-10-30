@@ -106,9 +106,10 @@ export const StyledImgPrinc = styled.div`
 
     .decoration1 {
         position: absolute;
-        margin-left: 22rem;
-        width: 8rem;
-        height: 8rem;
+        margin-left: 19rem;
+        margin-bottom: 4rem;
+        width: 7rem;
+        height: 7rem;
     }
 
     @media(max-width: 599px) {
