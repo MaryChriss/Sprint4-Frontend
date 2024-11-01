@@ -6,13 +6,34 @@ import { Button } from "../../components/FormLogin/FormLogin.style";
 import { Layout } from "../../components/Layout/Layout";
 import { StyledCar, StyledContainer, StyledConteudo, StyledInfosUser, StyledInputsCar } from "./Perfil.style";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+// Schema de validação com yup
+const schema = yup.object().shape({
+    model: yup.string().required("Modelo é obrigatório").min(2, "Modelo deve ter no mínimo 2 caracteres"),
+    brand: yup.string().required("Marca é obrigatória").min(2, "Marca deve ter no mínimo 2 caracteres"),
+    year: yup
+        .number()
+        .typeError("Ano deve ser um número")
+        .required("Ano é obrigatório")
+        .min(1886, "Ano deve ser maior ou igual a 1886") // Primeiros automóveis datam de 1886
+        .max(new Date().getFullYear(), "Ano deve ser menor ou igual ao ano atual"),
+});
 
 export default function Perfil() {
     const [user, setUser] = useState<{ name: string; email: string } | null>(null);
     const [vehicles, setVehicles] = useState([]);
-    const [model, setModel] = useState('');
-    const [brand, setBrand] = useState('');
-    const [year, setYear] = useState('');
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
@@ -26,22 +47,18 @@ export default function Perfil() {
         }
     }, []);
 
-    const handleAddVehicle = () => {
-        if (model && brand && year) {
-            const newVehicle = { model, brand, year };
-            const updatedVehicles = [...vehicles, newVehicle];
-            setVehicles(updatedVehicles);
-            localStorage.setItem("vehicles", JSON.stringify(updatedVehicles)); // Salva veículos no localStorage
-            setModel('');
-            setBrand('');
-            setYear('');
-        }
+    const onSubmit = (data: any) => {
+        const newVehicle = { model: data.model, brand: data.brand, year: data.year };
+        const updatedVehicles = [...vehicles, newVehicle];
+        setVehicles(updatedVehicles);
+        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles));
+        reset(); // Limpa os campos do formulário
     };
 
     const handleRemoveVehicle = (indexToRemove: number) => {
         const updatedVehicles = vehicles.filter((_, index) => index !== indexToRemove);
         setVehicles(updatedVehicles);
-        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles)); // Atualiza veículos no localStorage
+        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles));
     };
 
     return (
@@ -49,7 +66,7 @@ export default function Perfil() {
             <StyledContainer>
                 <StyledConteudo>
                     <StyledInfosUser>
-                        <Image src="/user.png" alt="Usuário" className="image" width={192} height={192}/>
+                        <Image src="/user.png" alt="Usuário" className="image" width={192} height={192} />
                         <div>
                             <h1 className="h1fi">{user?.name || "Nome do Usuário"}</h1>
                             <p>E-mail: {user?.email || "email@example.com"}</p>
@@ -58,36 +75,40 @@ export default function Perfil() {
 
                     <StyledInputsCar>
                         <h3>Veículos:</h3>
-                        <div>
-                            <input
-                                className="inputcar"
-                                type="text"
-                                placeholder="Modelo"
-                                value={model}
-                                onChange={(e) => setModel(e.target.value)}
-                            />
-                            <input
-                                className="inputcar"
-                                type="text"
-                                placeholder="Marca"
-                                value={brand}
-                                onChange={(e) => setBrand(e.target.value)}
-                            />
-                            <input
-                                className="inputcar"
-                                type="text"
-                                placeholder="Ano"
-                                value={year}
-                                onChange={(e) => setYear(e.target.value)}
-                            />
-                        </div>
-                        <Button
-                            className="botao"
-                            onClick={handleAddVehicle}
-                            style={{ marginTop: '2rem' }}
-                        >
-                            Adicionar
-                        </Button>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div>
+                                <input
+                                    className="inputcar"
+                                    type="text"
+                                    placeholder="Modelo"
+                                    {...register("model")}
+                                />
+                                {errors.model && <span className="text-red-700">{errors.model.message}</span>}
+                                
+                                <input
+                                    className="inputcar"
+                                    type="text"
+                                    placeholder="Marca"
+                                    {...register("brand")}
+                                />
+                                {errors.brand && <span className="text-red-700">{errors.brand.message}</span>}
+                                
+                                <input
+                                    className="inputcar"
+                                    type="text"
+                                    placeholder="Ano"
+                                    {...register("year")}
+                                />
+                                {errors.year && <span className="text-red-700">{errors.year.message}</span>}
+                            </div>
+                            <Button
+                                type="submit"
+                                className="botao"
+                                style={{ marginTop: '2rem' }}
+                            >
+                                Adicionar
+                            </Button>
+                        </form>
                     </StyledInputsCar>
 
                     <StyledCar>

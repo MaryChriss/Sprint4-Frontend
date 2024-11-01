@@ -125,3 +125,7 @@ export const StyledBotao = styled.div`
         border-radius: 1rem;
     }
 `
+
+export const StyledSpan = styled.span`
+    color: red;
+`
