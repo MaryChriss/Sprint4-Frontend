@@ -27,9 +27,9 @@ export const RightSection: React.FC = () => {
         <StyledRightSectionContainer>
             <StyledContentBox>
                 {isLogin ? (
-                    <FormLogin toggleForm={toggleForm} handleLogin={handleLogin} />
+                    <FormLogin toggleForm={toggleForm} />
                 ) : (
-                    <FormCadastro toggleForm={toggleForm} setUserData={setUserData} />
+                    <FormCadastro toggleForm={toggleForm} />
                 )}
             </StyledContentBox>
         </StyledRightSectionContainer>

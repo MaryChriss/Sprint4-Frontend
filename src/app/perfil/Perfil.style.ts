@@ -14,7 +14,7 @@ export const StyledConteudo = styled.div`
     justify-content: center;
     margin-right: 17rem;
     margin-left: 17rem;
-    margin-top: 6rem;
+    margin-top: 7.8rem;
     margin-bottom: 10.01rem;
     flex-direction: column;
     border-radius: 4rem;
