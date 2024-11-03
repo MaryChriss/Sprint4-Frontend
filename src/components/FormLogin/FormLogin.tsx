@@ -42,8 +42,10 @@ const FormLogin: React.FC<FormLoginProps> = ({ toggleForm }) => {
             });
 
             if (response.status === 202) {
+                const loginData = await response.json();
+                localStorage.setItem("loginData", JSON.stringify(loginData));
                 alert("Login bem-sucedido!");
-                router.push("/perfil"); // Redireciona para a página de perfil
+                router.push("/perfil");
             } else if (response.status === 403) {
                 alert("E-mail ou senha incorretos.");
             } else {

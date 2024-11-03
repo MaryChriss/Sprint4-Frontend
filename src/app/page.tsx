@@ -1,41 +1,26 @@
-// Verifique se o caminho está correto para o Layout
 "use client";
-import { useEffect } from "react";
-import { BiComment, BiListUl, BiMessageAltCheck, BiCar } from "react-icons/bi";
-import Image from 'next/image';
-import { 
-    StyledDescription, StyledFirstStep, StyledHome, StyledImgPrinc, 
-    StyledSecondStep, StyledStepByStep, StyledSteps, StyledStepsContainer, 
-    StyledSub, StyledText, StyledThirdStep 
-} from "./home.style";
+
+import { BiComment } from "react-icons/bi";
+import { BiListUl } from "react-icons/bi";
+import { BiMessageAltCheck } from "react-icons/bi";
+import { BiCar } from "react-icons/bi";
 import { Layout } from "@/components/Layout/Layout";
+import Image from 'next/image';
+import { StyledDescription, StyledFirstStep, StyledHome, StyledImgPrinc, StyledSecondStep, StyledStepByStep, StyledSteps, StyledStepsContainer, StyledSub, StyledText, StyledThirdStep } from "./home.style";
+import WatsonChat from "@/components/WatsonChat/Chatbot";
 
 export default function Home() {
-    useEffect(() => {
-        window.watsonAssistantChatOptions = {
-            integrationID: "949ab6c8-5ead-4f01-b875-bcf3b5363c72", 
-            region: "us-south", 
-            serviceInstanceID: "5ff36946-1ec7-434e-8572-b1f04d3af74a", 
-            onLoad: async (instance) => { await instance.render(); }
-        };
-
-        setTimeout(() => {
-            const script = document.createElement('script');
-            script.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + 
-                        (window.watsonAssistantChatOptions.clientVersion || 'latest') + 
-                        "/WatsonAssistantChatEntry.js";
-            document.head.appendChild(script);
-        }, 0);
-    }, []);
-
     return (
         <Layout>
+            <WatsonChat/>
             <StyledHome>
                 <StyledDescription>
+
                     <StyledText>
                         <h1>Conheça nossa inteligência artificial avançada, <br /> 
                         projetada para simplificar <br />
                         o processo de diagnóstico do seu veículo.</h1>
+
                         <p>O Brain Drive irá analisar e compreender as informações que você <br />
                         fornece sobre o problema do seu carro, oferecendo um <br />
                         auto-diagnóstico preciso e facilitando sua visita às nossas agências.
@@ -45,7 +30,7 @@ export default function Home() {
                     <StyledImgPrinc>
                         <Image className="decoration1" src="/BolinhasDeco.png" alt="imagem com bolinhas" width={96} height={96}/>
                         <Image className="fundo" src="/InteligenciaArt.png" alt="robo representando IA" width={352} height={352} />
-                    </StyledImgPrinc>
+                        </StyledImgPrinc>
                 </StyledDescription>
 
                 <StyledSub>
@@ -53,7 +38,9 @@ export default function Home() {
                 </StyledSub>
 
                 <StyledStepByStep>
+
                     <StyledStepsContainer>
+
                         <StyledFirstStep>
                             <StyledSteps>
                                 <Image src="/WatsonIA.png" alt="Icone watson"  width={63} height={63} />
@@ -86,13 +73,14 @@ export default function Home() {
                         <StyledThirdStep>
                             <StyledSteps>
                                 <BiCar size="2.2rem"/>
-                                <h3>Passo 5: Vá até a agência Porto mais próxima.</h3>
+                                <h3>Passo 5: Vá até a agencia Porto mais próxima.</h3>
                             </StyledSteps>
                         </StyledThirdStep>
 
                     </StyledStepsContainer>
+
                 </StyledStepByStep>
             </StyledHome>
         </Layout>
-    );
+    )
 }

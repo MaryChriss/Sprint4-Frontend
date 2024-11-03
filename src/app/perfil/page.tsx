@@ -12,11 +12,10 @@ import * as yup from "yup";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-// Schema de validação com yup
 const schema = yup.object().shape({
-    model: yup.string().required("Modelo é obrigatório").min(2, "Modelo deve ter no mínimo 2 caracteres"),
-    brand: yup.string().required("Marca é obrigatória").min(2, "Marca deve ter no mínimo 2 caracteres"),
-    year: yup
+    modelo: yup.string().required("Modelo é obrigatório").min(2, "Modelo deve ter no mínimo 2 caracteres"),
+    marca: yup.string().required("Marca é obrigatória").min(2, "Marca deve ter no mínimo 2 caracteres"),
+    ano: yup
         .number()
         .typeError("Ano deve ser um número")
         .required("Ano é obrigatório")
@@ -26,7 +25,7 @@ const schema = yup.object().shape({
 
 export default function Perfil() {
     const [user, setUser] = useState<{ name: string; email: string } | null>(null);
-    const [vehicles, setVehicles] = useState([]);
+    const [vehicles, setVehicles] = useState([]); // Inicializando como array vazio
 
     const {
         register,
@@ -37,42 +36,59 @@ export default function Perfil() {
         resolver: yupResolver(schema),
     });
 
-    // Função para buscar a lista de veículos do backend
-    const fetchVehicles = async () => {
+    const fetchVehicles = async (id_cliente) => {
         try {
-            const response = await fetch(`${apiUrl}/webapi/veiculo`);
+            const response = await fetch(`${apiUrl}/webapi/veiculo?id_cliente=${id_cliente}`);
             if (response.ok) {
                 const data = await response.json();
-                setVehicles(data);
+                setVehicles(Array.isArray(data) ? data : []); // Garante que `vehicles` seja um array
             } else {
                 console.error("Erro ao buscar veículos.");
+                setVehicles([]); // Define como array vazio em caso de erro
             }
         } catch (error) {
             console.error("Erro ao buscar veículos:", error);
+            setVehicles([]); // Define como array vazio em caso de erro
         }
     };
+    
 
-    // useEffect para buscar usuário e veículos ao carregar o componente
     useEffect(() => {
-        const savedUser = localStorage.getItem("user");
+        const savedUser = localStorage.getItem("loginData");
         if (savedUser) {
-            setUser(JSON.parse(savedUser));
+            const parsedUser = JSON.parse(savedUser);
+            const id_cliente = parsedUser.cliente?.id_cliente;
+            console.log("id_cliente:", id_cliente); // Verifica o valor do id_cliente
+    
+            setUser({ name: parsedUser.cliente.nome_cliente, email: parsedUser.email_login });
+    
+            if (id_cliente) {
+                fetchVehicles(id_cliente); // Busca os veículos do cliente ao abrir a página
+            }
         }
     }, []);
+    
 
-    // Função para adicionar um novo veículo
     const onSubmit = async (data) => {
-        const clienteId = localStorage.getItem("clienteId"); // Obtém o ID do cliente do localStorage
-        if (!clienteId) {
+        const savedUser = localStorage.getItem("loginData");
+        if (!savedUser) {
+            alert("Erro: ID do cliente não encontrado.");
+            return;
+        }
+
+        const parsedUser = JSON.parse(savedUser);
+        const id_cliente = parsedUser.cliente?.id_cliente;
+
+        if (!id_cliente) {
             alert("Erro: ID do cliente não encontrado.");
             return;
         }
 
         const newVehicle = { 
-            model: data.model, 
-            brand: data.brand, 
-            year: data.year, 
-            clienteId: clienteId // Adiciona o ID do cliente no corpo da requisição
+            modelo: data.modelo, 
+            marca: data.marca, 
+            ano: data.ano, 
+            cliente: { id_cliente: Number(id_cliente)}
         };
 
         try {
@@ -84,7 +100,7 @@ export default function Perfil() {
 
             if (response.ok) {
                 alert("Veículo adicionado com sucesso!");
-                await fetchVehicles(); // Atualiza a lista de veículos
+                await fetchVehicles(id_cliente); // Atualiza a lista de veículos
                 reset(); // Limpa os campos do formulário
             } else {
                 alert("Erro ao adicionar veículo.");
@@ -96,23 +112,28 @@ export default function Perfil() {
     };
 
     // Função para excluir um veículo pelo ID
-    const handleRemoveVehicle = async (vehicleId) => {
-        try {
-            const response = await fetch(`${apiUrl}/webapi/veiculo/${vehicleId}`, {
-                method: "DELETE",
-            });
 
-            if (response.ok) {
-                alert("Veículo excluído com sucesso!");
-                await fetchVehicles(); // Atualiza a lista de veículos
-            } else {
-                alert("Erro ao excluir veículo.");
+        const handleRemoveVehicle = async (vehicleId) => {
+            try {
+                const response = await fetch(`${apiUrl}/webapi/veiculo/${vehicleId}`, {
+                    method: "DELETE",
+                });
+
+                if (response.ok) {
+                    alert("Veículo excluído com sucesso!");
+                    
+                    // Remove o veículo excluído da lista localmente
+                    setVehicles((prevVehicles) => prevVehicles.filter(vehicle => vehicle.id_veiculo !== vehicleId));
+
+                } else {
+                    alert("Erro ao excluir veículo.");
+                }
+            } catch (error) {
+                console.error("Erro ao chamar a API:", error);
+                alert("Erro ao excluir veículo. Por favor, tente novamente.");
             }
-        } catch (error) {
-            console.error("Erro ao chamar a API:", error);
-            alert("Erro ao excluir veículo. Por favor, tente novamente.");
-        }
-    };
+        };
+
 
     return (
         <Layout>
@@ -134,25 +155,25 @@ export default function Perfil() {
                                     className="inputcar"
                                     type="text"
                                     placeholder="Modelo"
-                                    {...register("model")}
+                                    {...register("modelo")}
                                 />
-                                {errors.model && <span className="text-red-700">{errors.model.message}</span>}
+                                {errors.modelo && <span className="text-red-700">{errors.modelo.message}</span>}
                                 
                                 <input
                                     className="inputcar"
                                     type="text"
                                     placeholder="Marca"
-                                    {...register("brand")}
+                                    {...register("marca")}
                                 />
-                                {errors.brand && <span className="text-red-700">{errors.brand.message}</span>}
+                                {errors.marca && <span className="text-red-700">{errors.marca.message}</span>}
                                 
                                 <input
                                     className="inputcar"
                                     type="text"
                                     placeholder="Ano"
-                                    {...register("year")}
+                                    {...register("ano")}
                                 />
-                                {errors.year && <span className="text-red-700">{errors.year.message}</span>}
+                                {errors.ano && <span className="text-red-700">{errors.ano.message}</span>}
                             </div>
                             <Button
                                 type="submit"
@@ -166,11 +187,11 @@ export default function Perfil() {
 
                     <StyledCar>
                         {vehicles.map((vehicle) => (
-                            <div key={vehicle.id} className="card">
+                            <div key={vehicle.id_veiculo || vehicle.id} className="card">
                                 <div>
-                                    <p><strong>Modelo:</strong> {vehicle.model}</p>
-                                    <p><strong>Marca:</strong> {vehicle.brand}</p>
-                                    <p><strong>Ano:</strong> {vehicle.year}</p>
+                                    <p><strong>Modelo:</strong> {vehicle.modelo}</p>
+                                    <p><strong>Marca:</strong> {vehicle.marca}</p>
+                                    <p><strong>Ano:</strong> {vehicle.ano}</p>
                                 </div>
 
                                 <div className="icons">
@@ -182,7 +203,7 @@ export default function Perfil() {
                                             cursor: 'pointer',
                                             marginLeft: '1rem'
                                         }}
-                                        onClick={() => handleRemoveVehicle(vehicle.id)}
+                                        onClick={() => handleRemoveVehicle(vehicle.id_veiculo || vehicle.id)}
                                     />
                                 </div>
                             </div>
