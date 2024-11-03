@@ -52,7 +52,7 @@ export default function Home() {
                                 <BiComment size="2rem"/>
                                 <h3>Passo 2: Descreva o Problema</h3>
                                 <p>Descreva o problema que você está enfrentando com o seu carro de forma clara e detalhada.
-                                Exemplo: "Meu carro está fazendo um barulho estranho quando eu viro à esquerda."</p>
+                                Exemplo: &quot;Meu carro está fazendo um barulho estranho quando eu viro à esquerda.&quot;</p>
                             </StyledSteps>
                         </StyledFirstStep>
 
