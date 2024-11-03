@@ -1,16 +1,23 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { BiUser } from "react-icons/bi";
-import { FaLock } from "react-icons/fa";
 import { Button, Input, InputContainer, InputIcon, Styledh1, SwitchLink } from "./FormLogin.style";
 import { useRouter } from "next/navigation";
-import { FaCircleArrowLeft } from "react-icons/fa6";
+import { FaCircleArrowLeft, FaLock } from "react-icons/fa6";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface FormLoginProps {
     toggleForm: () => void;
 }
+
+interface LoginFormData {
+    email: string;
+    password: string;
+}
+
 
 const schema = Yup.object().shape({
     email: Yup.string().email("Email inválido").required("Email é obrigatório"),
@@ -19,29 +26,38 @@ const schema = Yup.object().shape({
 
 const FormLogin: React.FC<FormLoginProps> = ({ toggleForm }) => {
     const router = useRouter();
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data: any) => {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-            const { email: savedEmail, password: savedPassword } = JSON.parse(savedUser);
+    const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+        try {
+            const response = await fetch(`${apiUrl}/webapi/login/autenticar`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email_login: data.email,
+                    senha_login: data.password,
+                }),
+            });
 
-            if (data.email === savedEmail && data.password === savedPassword) {
+            if (response.status === 202) {
                 alert("Login bem-sucedido!");
-                router.push("/perfil");
-            } else {
+                router.push("/perfil"); // Redireciona para a página de perfil
+            } else if (response.status === 403) {
                 alert("E-mail ou senha incorretos.");
+            } else {
+                alert("Erro ao autenticar. Tente novamente mais tarde.");
             }
-        } else {
-            alert("Nenhum usuário cadastrado com este e-mail.");
+        } catch (error) {
+            console.error("Erro ao chamar a API:", error);
+            alert("Erro ao autenticar. Por favor, tente novamente mais tarde.");
         }
     };
 
     return (
         <>
-            <FaCircleArrowLeft size={25} onClick={() => router.push('/')}/>
+            <FaCircleArrowLeft size={25} onClick={() => router.push('/')} />
             <Styledh1>Login:</Styledh1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <InputContainer>
