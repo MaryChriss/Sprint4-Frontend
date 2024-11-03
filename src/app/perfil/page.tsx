@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 // Schema de validação com yup
 const schema = yup.object().shape({
     model: yup.string().required("Modelo é obrigatório").min(2, "Modelo deve ter no mínimo 2 caracteres"),
@@ -18,7 +20,7 @@ const schema = yup.object().shape({
         .number()
         .typeError("Ano deve ser um número")
         .required("Ano é obrigatório")
-        .min(1886, "Ano deve ser maior ou igual a 1886") // Primeiros automóveis datam de 1886
+        .min(1886, "Ano deve ser maior ou igual a 1886")
         .max(new Date().getFullYear(), "Ano deve ser menor ou igual ao ano atual"),
 });
 
@@ -35,30 +37,81 @@ export default function Perfil() {
         resolver: yupResolver(schema),
     });
 
+    // Função para buscar a lista de veículos do backend
+    const fetchVehicles = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/webapi/veiculo`);
+            if (response.ok) {
+                const data = await response.json();
+                setVehicles(data);
+            } else {
+                console.error("Erro ao buscar veículos.");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar veículos:", error);
+        }
+    };
+
+    // useEffect para buscar usuário e veículos ao carregar o componente
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
-
-        const savedVehicles = localStorage.getItem("vehicles");
-        if (savedVehicles) {
-            setVehicles(JSON.parse(savedVehicles));
-        }
     }, []);
 
-    const onSubmit = (data: any) => {
-        const newVehicle = { model: data.model, brand: data.brand, year: data.year };
-        const updatedVehicles = [...vehicles, newVehicle];
-        setVehicles(updatedVehicles);
-        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles));
-        reset(); // Limpa os campos do formulário
+    // Função para adicionar um novo veículo
+    const onSubmit = async (data) => {
+        const clienteId = localStorage.getItem("clienteId"); // Obtém o ID do cliente do localStorage
+        if (!clienteId) {
+            alert("Erro: ID do cliente não encontrado.");
+            return;
+        }
+
+        const newVehicle = { 
+            model: data.model, 
+            brand: data.brand, 
+            year: data.year, 
+            clienteId: clienteId // Adiciona o ID do cliente no corpo da requisição
+        };
+
+        try {
+            const response = await fetch(`${apiUrl}/webapi/veiculo`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newVehicle),
+            });
+
+            if (response.ok) {
+                alert("Veículo adicionado com sucesso!");
+                await fetchVehicles(); // Atualiza a lista de veículos
+                reset(); // Limpa os campos do formulário
+            } else {
+                alert("Erro ao adicionar veículo.");
+            }
+        } catch (error) {
+            console.error("Erro ao chamar a API:", error);
+            alert("Erro ao adicionar veículo. Por favor, tente novamente.");
+        }
     };
 
-    const handleRemoveVehicle = (indexToRemove: number) => {
-        const updatedVehicles = vehicles.filter((_, index) => index !== indexToRemove);
-        setVehicles(updatedVehicles);
-        localStorage.setItem("vehicles", JSON.stringify(updatedVehicles));
+    // Função para excluir um veículo pelo ID
+    const handleRemoveVehicle = async (vehicleId) => {
+        try {
+            const response = await fetch(`${apiUrl}/webapi/veiculo/${vehicleId}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                alert("Veículo excluído com sucesso!");
+                await fetchVehicles(); // Atualiza a lista de veículos
+            } else {
+                alert("Erro ao excluir veículo.");
+            }
+        } catch (error) {
+            console.error("Erro ao chamar a API:", error);
+            alert("Erro ao excluir veículo. Por favor, tente novamente.");
+        }
     };
 
     return (
@@ -112,8 +165,8 @@ export default function Perfil() {
                     </StyledInputsCar>
 
                     <StyledCar>
-                        {vehicles.map((vehicle, index) => (
-                            <div key={index} className="card">
+                        {vehicles.map((vehicle) => (
+                            <div key={vehicle.id} className="card">
                                 <div>
                                     <p><strong>Modelo:</strong> {vehicle.model}</p>
                                     <p><strong>Marca:</strong> {vehicle.brand}</p>
@@ -129,7 +182,7 @@ export default function Perfil() {
                                             cursor: 'pointer',
                                             marginLeft: '1rem'
                                         }}
-                                        onClick={() => handleRemoveVehicle(index)}
+                                        onClick={() => handleRemoveVehicle(vehicle.id)}
                                     />
                                 </div>
                             </div>
