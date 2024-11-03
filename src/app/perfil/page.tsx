@@ -23,9 +23,21 @@ const schema = yup.object().shape({
         .max(new Date().getFullYear(), "Ano deve ser menor ou igual ao ano atual"),
 });
 
+interface User {
+    name: string;
+    email: string;
+}
+
+interface Vehicle {
+    id_veiculo: number;
+    modelo: string;
+    marca: string;
+    ano: number;
+}
+
 export default function Perfil() {
-    const [user, setUser] = useState<{ name: string; email: string } | null>(null);
-    const [vehicles, setVehicles] = useState([]); // Inicializando como array vazio
+    const [user, setUser] = useState<User | null>(null);
+    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
     const {
         register,
@@ -36,40 +48,38 @@ export default function Perfil() {
         resolver: yupResolver(schema),
     });
 
-    const fetchVehicles = async (id_cliente) => {
+    const fetchVehicles = async (id_cliente: number) => {
         try {
-            const response = await fetch(`${apiUrl}/webapi/veiculo?id_cliente=${id_cliente}`);
+            const response = await fetch(`${apiUrl}/webapi/veiculo?id_cliente=${id_cliente}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
+
             if (response.ok) {
                 const data = await response.json();
-                setVehicles(Array.isArray(data) ? data : []); // Garante que `vehicles` seja um array
+                setVehicles(Array.isArray(data) ? data : []);
             } else {
                 console.error("Erro ao buscar veículos.");
-                setVehicles([]); // Define como array vazio em caso de erro
             }
         } catch (error) {
             console.error("Erro ao buscar veículos:", error);
-            setVehicles([]); // Define como array vazio em caso de erro
         }
     };
-    
 
     useEffect(() => {
         const savedUser = localStorage.getItem("loginData");
         if (savedUser) {
             const parsedUser = JSON.parse(savedUser);
             const id_cliente = parsedUser.cliente?.id_cliente;
-            console.log("id_cliente:", id_cliente); // Verifica o valor do id_cliente
-    
             setUser({ name: parsedUser.cliente.nome_cliente, email: parsedUser.email_login });
-    
+
             if (id_cliente) {
-                fetchVehicles(id_cliente); // Busca os veículos do cliente ao abrir a página
+                fetchVehicles(id_cliente);
             }
         }
     }, []);
-    
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: any) => {
         const savedUser = localStorage.getItem("loginData");
         if (!savedUser) {
             alert("Erro: ID do cliente não encontrado.");
@@ -88,7 +98,7 @@ export default function Perfil() {
             modelo: data.modelo, 
             marca: data.marca, 
             ano: data.ano, 
-            cliente: { id_cliente: Number(id_cliente)}
+            cliente: { id_cliente: Number(id_cliente) }
         };
 
         try {
@@ -100,8 +110,8 @@ export default function Perfil() {
 
             if (response.ok) {
                 alert("Veículo adicionado com sucesso!");
-                await fetchVehicles(id_cliente); // Atualiza a lista de veículos
-                reset(); // Limpa os campos do formulário
+                await fetchVehicles(id_cliente);
+                reset();
             } else {
                 alert("Erro ao adicionar veículo.");
             }
@@ -111,29 +121,23 @@ export default function Perfil() {
         }
     };
 
-    // Função para excluir um veículo pelo ID
+    const handleRemoveVehicle = async (vehicleId: number) => {
+        try {
+            const response = await fetch(`${apiUrl}/webapi/veiculo/${vehicleId}`, {
+                method: "DELETE",
+            });
 
-        const handleRemoveVehicle = async (vehicleId) => {
-            try {
-                const response = await fetch(`${apiUrl}/webapi/veiculo/${vehicleId}`, {
-                    method: "DELETE",
-                });
-
-                if (response.ok) {
-                    alert("Veículo excluído com sucesso!");
-                    
-                    // Remove o veículo excluído da lista localmente
-                    setVehicles((prevVehicles) => prevVehicles.filter(vehicle => vehicle.id_veiculo !== vehicleId));
-
-                } else {
-                    alert("Erro ao excluir veículo.");
-                }
-            } catch (error) {
-                console.error("Erro ao chamar a API:", error);
-                alert("Erro ao excluir veículo. Por favor, tente novamente.");
+            if (response.ok) {
+                alert("Veículo excluído com sucesso!");
+                setVehicles(prevVehicles => prevVehicles.filter(vehicle => vehicle.id_veiculo !== vehicleId));
+            } else {
+                alert("Erro ao excluir veículo.");
             }
-        };
-
+        } catch (error) {
+            console.error("Erro ao chamar a API:", error);
+            alert("Erro ao excluir veículo. Por favor, tente novamente.");
+        }
+    };
 
     return (
         <Layout>
@@ -186,8 +190,8 @@ export default function Perfil() {
                     </StyledInputsCar>
 
                     <StyledCar>
-                        {vehicles.map((vehicle) => (
-                            <div key={vehicle.id_veiculo || vehicle.id} className="card">
+                        {vehicles.map(vehicle => (
+                            <div key={vehicle.id_veiculo} className="card">
                                 <div>
                                     <p><strong>Modelo:</strong> {vehicle.modelo}</p>
                                     <p><strong>Marca:</strong> {vehicle.marca}</p>
@@ -203,7 +207,7 @@ export default function Perfil() {
                                             cursor: 'pointer',
                                             marginLeft: '1rem'
                                         }}
-                                        onClick={() => handleRemoveVehicle(vehicle.id_veiculo || vehicle.id)}
+                                        onClick={() => handleRemoveVehicle(vehicle.id_veiculo)}
                                     />
                                 </div>
                             </div>
