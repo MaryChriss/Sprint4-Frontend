@@ -50,21 +50,25 @@ export default function Perfil() {
 
     const fetchVehicles = async (id_cliente: number) => {
         try {
-            const response = await fetch(`${apiUrl}/webapi/veiculo?id_cliente=${id_cliente}`, {
+            const response = await fetch(`${apiUrl}/webapi/veiculo/getByClient/${id_cliente}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
-                setVehicles(Array.isArray(data) ? data : []);
+            
+                const vehiclesArray = Array.isArray(data) ? data : (data ? [data] : []);
+                setVehicles(vehiclesArray);
+            
             } else {
-                console.error("Erro ao buscar veículos.");
+                console.error("Erro ao buscar veículos.", response.status, response.statusText);
             }
         } catch (error) {
             console.error("Erro ao buscar veículos:", error);
         }
     };
+    
 
     useEffect(() => {
         const savedUser = localStorage.getItem("loginData");
@@ -188,31 +192,34 @@ export default function Perfil() {
                             </Button>
                         </form>
                     </StyledInputsCar>
+                        <StyledCar>
+                            {vehicles.length === 0 ? (
+                                <p>Nenhum veículo encontrado.</p>
+                            ) : (
+                                vehicles.map(vehicle => (
+                                    <div key={vehicle.id_veiculo} className="card">
+                                        <div>
+                                            <p><strong>Modelo:</strong> {vehicle.modelo}</p>
+                                            <p><strong>Marca:</strong> {vehicle.marca}</p>
+                                            <p><strong>Ano:</strong> {vehicle.ano}</p>
+                                        </div>
+                                        <div className="icons">
+                                            <FaCar style={{ fontSize: '3rem', color: '#007bff', marginLeft: "3rem" }} />
+                                            <FaTimes
+                                                style={{
+                                                    fontSize: '1.2rem',
+                                                    color: 'red',
+                                                    cursor: 'pointer',
+                                                    marginLeft: '1rem'
+                                                }}
+                                                onClick={() => handleRemoveVehicle(vehicle.id_veiculo)}
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </StyledCar>
 
-                    <StyledCar>
-                        {vehicles.map(vehicle => (
-                            <div key={vehicle.id_veiculo} className="card">
-                                <div>
-                                    <p><strong>Modelo:</strong> {vehicle.modelo}</p>
-                                    <p><strong>Marca:</strong> {vehicle.marca}</p>
-                                    <p><strong>Ano:</strong> {vehicle.ano}</p>
-                                </div>
-
-                                <div className="icons">
-                                    <FaCar style={{ fontSize: '3rem', color: '#007bff', marginLeft: "3rem" }} />
-                                    <FaTimes
-                                        style={{
-                                            fontSize: '1.2rem',
-                                            color: 'red',
-                                            cursor: 'pointer',
-                                            marginLeft: '1rem'
-                                        }}
-                                        onClick={() => handleRemoveVehicle(vehicle.id_veiculo)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </StyledCar>
                 </StyledConteudo>
             </StyledContainer>
         </Layout>
