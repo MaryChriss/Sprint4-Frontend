@@ -15,7 +15,7 @@ export const StyledHeader = styled.div`
     margin-right: 5rem;
 
     @media (max-width: 599px) {
-        margin-right: 2rem;
+        margin-right: 0rem;
     }
     `;
 
@@ -26,7 +26,7 @@ export const StyledHeader = styled.div`
     width: 100%;
 
     @media (max-width: 599px) {
-        gap: 1rem;
+        gap: 0rem;
         padding-left: 0;
     }
     `;

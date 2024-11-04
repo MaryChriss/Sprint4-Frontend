@@ -17,7 +17,7 @@ export const TitleLogo = styled.h1`
         color: #00a1fc;
         font-size: 1.25rem;
         margin-left: -0.2rem;
-        margin-right: 1rem;
+        margin-right: -0.5rem;
     }
 
     @media (min-width: 600px) and (max-width:999px){

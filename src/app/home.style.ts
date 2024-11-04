@@ -116,15 +116,15 @@ export const StyledImgPrinc = styled.div`
 
         .fundo {
             margin-top: 3rem;
-            margin-left: 10.5rem;
-            margin-right: 2rem;
+            margin-left: 7rem;
+            margin-right: 0rem;
             height: 17rem;
             width: 17rem;
         }
 
         .decoration1 {
             position: absolute;
-            margin-left: 24.5rem;
+            margin-left: 21rem;
             width: 5.5rem;
             height: 5.5rem;
         }
